@@ -2,7 +2,7 @@ streamlit
 pandas
 matplotlib
 seaborn
-PIL
+pillow
 streamlit_echarts
 json
 plotly
