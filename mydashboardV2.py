@@ -13,16 +13,16 @@ from Helper import loadData
 
 st.set_page_config(page_title='Dashboard ACCIA', page_icon=None, layout='wide', initial_sidebar_state='auto')
 
-machines = loadData('../ACCIA/PdM/Code/PdM_machines.csv')
-maint = loadData('../ACCIA/PdM/Code/PdM_maint.csv')
-errors = loadData('../ACCIA/PdM/Code/PdM_errors.csv')
-telemetry = loadData('../ACCIA/PdM/Code/PdM_telemetry.csv')
-failures = loadData('../ACCIA/PdM/Code/PdM_failures.csv')
-errorsbymodel = loadData('../ACCIA/PdM/Code/errorsbymodel.csv')
-errorsbyage = loadData('../ACCIA/PdM/Code/errorsbyage.csv')
-failuresbyage = loadData('../ACCIA/PdM/Code/failuresbyage.csv')
-failuresbymodel = loadData('../ACCIA/PdM/Code/failuresbymodel.csv')
-sincelastfail = loadData('../ACCIA/PdM/Code/sincelastfail.csv')
+machines = loadData('./PdM_machines.csv')
+maint = loadData('./PdM_maint.csv')
+errors = loadData('./PdM_errors.csv')
+telemetry = loadData('./PdM_telemetry.csv')
+failures = loadData('./PdM_failures.csv')
+errorsbymodel = loadData('./errorsbymodel.csv')
+errorsbyage = loadData('./errorsbyage.csv')
+failuresbyage = loadData('./failuresbyage.csv')
+failuresbymodel = loadData('./failuresbymodel.csv')
+sincelastfail = loadData('./sincelastfail.csv')
 
 
 
