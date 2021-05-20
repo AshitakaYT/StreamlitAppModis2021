@@ -1,0 +1,9 @@
+streamlit
+pandas
+matplotlib.pyplot
+seaborn
+PIL
+streamlit_echarts
+json
+plotly.express
+Helper
