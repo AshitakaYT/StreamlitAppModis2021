@@ -2,9 +2,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(color_codes=True)
-from PIL import Image
+from pillow import Image
 from streamlit_echarts import st_echarts
-import json
 import plotly.express as px
 from Helper import loadData
 

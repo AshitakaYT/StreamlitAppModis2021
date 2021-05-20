@@ -4,6 +4,5 @@ matplotlib
 seaborn
 pillow
 streamlit_echarts
-json
 plotly
 Helper
