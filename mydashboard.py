@@ -239,7 +239,7 @@ if selected_metrics == 'Dashboard':
     with lin1:
 
         fig = px.histogram(telemetry, x='volt', nbins=1000, width=width, height=height)
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, use_container_width=True)
         selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
         st.write('volt' + " pour la machine " + str(selected_machine1))
         plot = telemetry[
@@ -250,7 +250,7 @@ if selected_metrics == 'Dashboard':
 
 
         fig = px.histogram(telemetry, x='rotate', nbins=1000, width=width, height=height)
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, use_container_width=True)
         selected_machine2 = st.slider("Choisissez une machine pour la rotation", 1, 100)
         st.write('rotate' + " pour la machine " + str(selected_machine2))
         plot = telemetry[
@@ -265,7 +265,7 @@ if selected_metrics == 'Dashboard':
 
     with lin2:
         fig = px.histogram(telemetry, x='vibration', nbins=1000, width=width, height=height)
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, use_container_width=True)
         selected_machine3 = st.slider("Choisissez une machine pour la vibration", 1, 100)
         st.write('vibration' + " pour la machine " + str(selected_machine3))
         plot = telemetry[
@@ -276,7 +276,7 @@ if selected_metrics == 'Dashboard':
 
 
         fig = px.histogram(telemetry, x='pressure', nbins=1000, width=width, height=height)
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, use_container_width=True)
         selected_machine4 = st.slider("Choisissez une machine pour la pression", 1, 100)
         st.write('pressure' + " pour la machine " + str(selected_machine4))
         plot = telemetry[
