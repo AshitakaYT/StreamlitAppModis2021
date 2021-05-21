@@ -39,7 +39,7 @@ if selected_metrics == 'Explications sur les datasets':
         Avant de présenter les datasets, il est essentiel de comprendre quel sujet ils traitent.
         Le jeu de données analyse un lot de 100 machines telles que :
         """)
-    title_image = Image.open("./machine.PNG")
+    title_image = Image.open("./Machine.PNG")
     st.image(title_image)
     st.write("""
             Il existe 4 modèles de machines. Chaque machine est concue a l'aide de 4 pièces (components) qui mesurent diverses données (telemetry). Ces pièces sont maintenues régulièrement, et peuvent générer des erreurs (errors). Lorsqu'une pièce est défaillante, elle est remplacée(failure).
