@@ -57,7 +57,7 @@ if selected_metrics == 'Analyse de données':
     col1, col2 = st.beta_columns((6, 6))
     col3, col4 = st.beta_columns((6, 6))
     width = 1200
-    height = 450
+    height = 400
 
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- Age
