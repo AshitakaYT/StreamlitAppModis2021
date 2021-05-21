@@ -71,7 +71,7 @@ if selected_metrics == 'Analyse de données':
             fig2 = px.pie(machines, values=machines['age'].value_counts(),names=machines['age'].value_counts().keys(), width=width, height=height)
             st.plotly_chart(fig2, use_container_width=True)
 
-        elif features == 'Modèles selon les ages':			
+        if features == 'Modèles selon les ages':			
             fig = px.histogram(machines, x='age' ,
                                 color='model',
                                 #log_y=True, # represent bars with log scale
@@ -81,7 +81,7 @@ if selected_metrics == 'Analyse de données':
             )
             st.plotly_chart(fig, use_container_width=True)
 
-        elif features == 'Failures selon les ages + moyenne par machine':
+        if features == 'Failures selon les ages + moyenne par machine':
             df = pd.merge(machines, failures)
             fig = px.histogram(df, x='age' ,
                                 color='failure',
@@ -98,7 +98,7 @@ if selected_metrics == 'Analyse de données':
                         )
             st.plotly_chart(fig2, use_container_width=True)
 
-        elif features == 'Erreurs selon les ages + moyenne par machine':			
+        if features == 'Erreurs selon les ages + moyenne par machine':			
             df = pd.merge(errors, machines)
             fig = px.histogram(df, x='age' ,
                                 color='errorID',
@@ -127,7 +127,7 @@ if selected_metrics == 'Analyse de données':
             fig2 = px.pie(machines, values=machines['model'].value_counts(),names=machines['model'].value_counts().keys(), width=width, height=height)
             st.plotly_chart(fig2, use_container_width=True)
 
-        elif features == 'Modèles selon les ages':
+        if features == 'Modèles selon les ages':
             #Age by model
             fig = px.histogram(machines, x='age' ,
                                 color='model',
@@ -138,7 +138,7 @@ if selected_metrics == 'Analyse de données':
             )
             st.plotly_chart(fig, use_container_width=True)
 
-        elif features == 'Failures selon les modèles (moyenne par machine)':
+        if features == 'Failures selon les modèles (moyenne par machine)':
             #Failures by model
             fig2 = px.bar(failuresbymodel, x='model', y=[failuresbymodel.comp1, failuresbymodel.comp2, failuresbymodel.comp3, failuresbymodel.comp4],
                         barmode='group',
@@ -146,7 +146,7 @@ if selected_metrics == 'Analyse de données':
                         )
             st.plotly_chart(fig2, use_container_width=True)
 
-        elif features == 'Erreurs selon les modèles (moyenne par machine)':
+        if features == 'Erreurs selon les modèles (moyenne par machine)':
             #Errors by model
             fig2 = px.bar(errorsbymodel, x='model', y=[errorsbymodel.error1, errorsbymodel.error2, errorsbymodel.error3, errorsbymodel.error4, errorsbymodel.error5],
                         barmode='group',
@@ -167,14 +167,14 @@ if selected_metrics == 'Analyse de données':
             fig2 = px.pie(failures, values=failures['failure'].value_counts(),names=failures['failure'].value_counts().keys(), width=width, height=height)
             st.plotly_chart(fig2, use_container_width=True)
 
-        elif features == 'Failures selon les modèles + moyenne par machine':
+        if features == 'Failures selon les modèles + moyenne par machine':
             fig2 = px.bar(failuresbymodel, x='model', y=[failuresbymodel.comp1, failuresbymodel.comp2, failuresbymodel.comp3, failuresbymodel.comp4],
                         barmode='group',
                         width=width, height=height
                         )
             st.plotly_chart(fig2, use_container_width=True)
 
-        elif features == 'Failures selon les ages + moyenne par machine':
+        if features == 'Failures selon les ages + moyenne par machine':
             df = pd.merge(machines, failures)
             fig = px.histogram(df, x='age' ,
                                 color='failure',
@@ -203,14 +203,14 @@ if selected_metrics == 'Analyse de données':
             st.plotly_chart(fig, use_container_width=True)
             fig2 = px.pie(errors, values=errors['errorID'].value_counts(),names=errors['errorID'].value_counts().keys(), width=width, height=height)
             st.plotly_chart(fig2, use_container_width=True)
-        elif features == 'Erreurs selon les modèles + moyenne par machine':
+        if features == 'Erreurs selon les modèles + moyenne par machine':
     	    #Errors by model
             fig2 = px.bar(errorsbymodel, x='model', y=[errorsbymodel.error1, errorsbymodel.error2, errorsbymodel.error3, errorsbymodel.error4, errorsbymodel.error5],
                         barmode='group',
                         width=width, height=height
                         )
             st.plotly_chart(fig2, use_container_width=True)
-        elif features == 'Erreurs selon les ages + moyenne par machine':
+        if features == 'Erreurs selon les ages + moyenne par machine':
             df = pd.merge(errors, machines)
             fig = px.histogram(df, x='age' ,
                                 color='errorID',
@@ -231,7 +231,7 @@ if selected_metrics == 'Analyse de données':
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- telemetry whole
     #--------------------------------- ---------------------------------  ---------------------------------
-elif selected_metrics == 'Etat de santé systeme':
+if selected_metrics == 'Etat de santé systeme':
     lin1, lin2 = st.beta_columns((6, 6))
     width = 1200
     height = 600
