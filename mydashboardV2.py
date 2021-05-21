@@ -243,8 +243,6 @@ elif selected_metrics == 'Etat de santé systeme':
 
         #st.write(selected_feature + " pour toutes les machines")
         
-        fig = px.histogram(telemetry, x='volt', nbins=1000, width=width, height=height)
-        st.plotly_chart(fig, use_container_width=True)
         selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
         st.write('volt' + " pour la machine " + str(selected_machine1))
         plot = telemetry[
@@ -253,9 +251,6 @@ elif selected_metrics == 'Etat de santé systeme':
         fig = px.line(plot, width=width, height=height)
         st.plotly_chart(fig, use_container_width=True)
 
-
-        fig = px.histogram(telemetry, x='rotate', nbins=1000, width=width, height=height)
-        st.plotly_chart(fig, use_container_width=True)
         selected_machine2 = st.slider("Choisissez une machine pour la rotation", 1, 100)
         st.write('rotate' + " pour la machine " + str(selected_machine2))
         plot = telemetry[
@@ -269,8 +264,7 @@ elif selected_metrics == 'Etat de santé systeme':
     #--------------------------------- ---------------------------------  ---------------------------------
 
     with lin2:
-        fig = px.histogram(telemetry, x='vibration', nbins=1000, width=width, height=height)
-        st.plotly_chart(fig, use_container_width=True)
+
         selected_machine3 = st.slider("Choisissez une machine pour la vibration", 1, 100)
         st.write('vibration' + " pour la machine " + str(selected_machine3))
         plot = telemetry[
@@ -279,9 +273,6 @@ elif selected_metrics == 'Etat de santé systeme':
         fig = px.line(plot, width=width, height=height)
         st.plotly_chart(fig, use_container_width=True)
 
-
-        fig = px.histogram(telemetry, x='pressure', nbins=1000, width=width, height=height)
-        st.plotly_chart(fig, use_container_width=True)
         selected_machine4 = st.slider("Choisissez une machine pour la pression", 1, 100)
         st.write('pressure' + " pour la machine " + str(selected_machine4))
         plot = telemetry[
