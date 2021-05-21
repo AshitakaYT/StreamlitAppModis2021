@@ -14,17 +14,19 @@ from Helper import loadData
 
 st.set_page_config(page_title='Dashboard ACCIA', page_icon=None, layout='wide', initial_sidebar_state='auto')
 
-machines = loadData('../ACCIA/PdM/Code/PdM_machines.csv')
-maint = loadData('../ACCIA/PdM/Code/PdM_maint.csv')
-errors = loadData('../ACCIA/PdM/Code/PdM_errors.csv')
-telemetry = loadData('../ACCIA/PdM/Code/PdM_telemetry.csv')
-failures = loadData('../ACCIA/PdM/Code/PdM_failures.csv')
-errorsbymodel = loadData('../ACCIA/PdM/Code/errorsbymodel.csv')
-errorsbyage = loadData('../ACCIA/PdM/Code/errorsbyage.csv')
-failuresbyage = loadData('../ACCIA/PdM/Code/failuresbyage.csv')
-failuresbymodel = loadData('../ACCIA/PdM/Code/failuresbymodel.csv')
-sincelastfail = loadData('../ACCIA/PdM/Code/sincelastfail.csv')
+machines = loadData('./PdM_machines.csv')
+maint = loadData('./PdM_maint.csv')
+errors = loadData('./PdM_errors.csv')
+telemetry = loadData('./PdM_telemetry.csv')
+failures = loadData('./PdM_failures.csv')
+errorsbymodel = loadData('./errorsbymodel.csv')
+errorsbyage = loadData('./errorsbyage.csv')
+failuresbyage = loadData('./failuresbyage.csv')
+failuresbymodel = loadData('./failuresbymodel.csv')
+sincelastfail = loadData('./sincelastfail.csv')
 
+width = 1200
+height = 300
 
 
 selected_metrics = st.sidebar.selectbox(
@@ -64,10 +66,10 @@ if selected_metrics == 'Dashboard':
         features = st.selectbox(label="Choisissez une analyse liée a l'age", options=["Répartition de l'age des machines",'Modèles selon les ages','Erreurs selon les ages + moyenne par machine','Failures selon les ages + moyenne par machine'])
 
         if features == "Répartition de l'age des machines":
-            fig = px.bar(machines['age'].value_counts(), width=600, height=400)
-            st.plotly_chart(fig)
-            fig2 = px.pie(machines, values=machines['age'].value_counts(),names=machines['age'].value_counts().keys(), width=600, height=400)
-            st.plotly_chart(fig2)
+            fig = px.bar(machines['age'].value_counts(), width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+            fig2 = px.pie(machines, values=machines['age'].value_counts(),names=machines['age'].value_counts().keys(), width=width, height=height)
+            st.plotly_chart(fig2, use_container_width=True)
 
         if features == 'Modèles selon les ages':			
             fig = px.histogram(machines, x='age' ,
@@ -75,9 +77,9 @@ if selected_metrics == 'Dashboard':
                                 #log_y=True, # represent bars with log scale
                                 nbins= 50,
                                 labels={'value':'age'}, # can specify one label per df column)
-                                width=600, height=400
+                                width=width, height=height
             )
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
 
         if features == 'Failures selon les ages + moyenne par machine':
             df = pd.merge(machines, failures)
@@ -86,15 +88,15 @@ if selected_metrics == 'Dashboard':
                                 #log_y=True, # represent bars with log scale
                                 nbins= 50,
                                 labels={'value':'age'}, # can specify one label per df column)
-                                width=600, height=400
+                                width=width, height=height
             )
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
 
             fig2 = px.bar(failuresbyage, x='age', y=[failuresbyage.comp1, failuresbyage.comp2, failuresbyage.comp3, failuresbyage.comp4],
                         barmode='group',
-                        width=600, height=400
+                        width=width, height=height
                         )
-            st.plotly_chart(fig2)
+            st.plotly_chart(fig2, use_container_width=True)
 
         if features == 'Erreurs selon les ages + moyenne par machine':			
             df = pd.merge(errors, machines)
@@ -103,14 +105,14 @@ if selected_metrics == 'Dashboard':
                                 #log_y=True, # represent bars with log scale
                                 nbins= 50,
                                 labels={'value':'age'},
-                                width=600, height=400 # can specify one label per df column)
+                                width=width, height=height # can specify one label per df column)
             )
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
             fig2 = px.bar(errorsbyage, x='age', y=[errorsbyage.error1, errorsbyage.error2, errorsbyage.error3, errorsbyage.error4, errorsbyage.error5],
                         barmode='group',
-                        width=600, height=400
+                        width=width, height=height
                         )
-            st.plotly_chart(fig2)
+            st.plotly_chart(fig2, use_container_width=True)
 
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- Model
@@ -120,10 +122,10 @@ if selected_metrics == 'Dashboard':
     	label="Choisissez une analyse liée au modèles", options=["Répartition des modèles",'Modèles selon les ages','Erreurs selon les modèles (moyenne par machine)','Failures selon les modèles (moyenne par machine)']
     	)
         if features == "Répartition des modèles":
-            fig = px.bar(machines['model'].value_counts(), width=600, height=400)
-            st.plotly_chart(fig)
-            fig2 = px.pie(machines, values=machines['model'].value_counts(),names=machines['model'].value_counts().keys(), width=600, height=400)
-            st.plotly_chart(fig2)
+            fig = px.bar(machines['model'].value_counts(), width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+            fig2 = px.pie(machines, values=machines['model'].value_counts(),names=machines['model'].value_counts().keys(), width=width, height=height)
+            st.plotly_chart(fig2, use_container_width=True)
 
         if features == 'Modèles selon les ages':
             #Age by model
@@ -132,25 +134,25 @@ if selected_metrics == 'Dashboard':
                                 #log_y=True, # represent bars with log scale
                                 nbins= 50,
                                 labels={'value':'age'}, # can specify one label per df column)
-                                width=600, height=400
+                                width=width, height=height
             )
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
 
         if features == 'Failures selon les modèles (moyenne par machine)':
             #Failures by model
             fig2 = px.bar(failuresbymodel, x='model', y=[failuresbymodel.comp1, failuresbymodel.comp2, failuresbymodel.comp3, failuresbymodel.comp4],
                         barmode='group',
-                        width=600, height=400
+                        width=width, height=height
                         )
-            st.plotly_chart(fig2)
+            st.plotly_chart(fig2, use_container_width=True)
 
         if features == 'Erreurs selon les modèles (moyenne par machine)':
             #Errors by model
             fig2 = px.bar(errorsbymodel, x='model', y=[errorsbymodel.error1, errorsbymodel.error2, errorsbymodel.error3, errorsbymodel.error4, errorsbymodel.error5],
                         barmode='group',
-                        width=600, height=400
+                        width=width, height=height
                         )
-            st.plotly_chart(fig2)
+            st.plotly_chart(fig2, use_container_width=True)
 
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- Failures
@@ -160,17 +162,17 @@ if selected_metrics == 'Dashboard':
         label="Choisissez une analyse liée aux failures", options=['Répartition des failures','Failures selon les ages + moyenne par machine','Failures selon les modèles + moyenne par machine']
     	)
         if features == 'Répartition des failures':
-            fig = px.bar(failures['failure'].value_counts(), width=600, height=400)
-            st.plotly_chart(fig)
-            fig2 = px.pie(failures, values=failures['failure'].value_counts(),names=failures['failure'].value_counts().keys(), width=600, height=400)
-            st.plotly_chart(fig2)
+            fig = px.bar(failures['failure'].value_counts(), width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+            fig2 = px.pie(failures, values=failures['failure'].value_counts(),names=failures['failure'].value_counts().keys(), width=width, height=height)
+            st.plotly_chart(fig2, use_container_width=True)
 
         if features == 'Failures selon les modèles + moyenne par machine':
             fig2 = px.bar(failuresbymodel, x='model', y=[failuresbymodel.comp1, failuresbymodel.comp2, failuresbymodel.comp3, failuresbymodel.comp4],
                         barmode='group',
-                        width=500, height=400
+                        width=width, height=height
                         )
-            st.plotly_chart(fig2)
+            st.plotly_chart(fig2, use_container_width=True)
 
         if features == 'Failures selon les ages + moyenne par machine':
             df = pd.merge(machines, failures)
@@ -179,15 +181,15 @@ if selected_metrics == 'Dashboard':
                                 #log_y=True, # represent bars with log scale
                                 nbins= 50,
                                 labels={'value':'age'}, # can specify one label per df column)
-                                width=600, height=400
+                                width=width, height=height
             )
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
 
             fig2 = px.bar(failuresbyage, x='age', y=[failuresbyage.comp1, failuresbyage.comp2, failuresbyage.comp3, failuresbyage.comp4],
                         barmode='group',
-                        width=600, height=400
+                        width=width, height=height
                         )
-            st.plotly_chart(fig2)
+            st.plotly_chart(fig2, use_container_width=True)
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- Errors
     #--------------------------------- ---------------------------------  ---------------------------------
@@ -197,17 +199,17 @@ if selected_metrics == 'Dashboard':
         label="Choisissez une analyse liée aux erreurs", options=['Répartition des erreurs','Erreurs selon les ages + moyenne par machine','Erreurs selon les modèles + moyenne par machine']
         )
         if features =='Répartition des erreurs':
-            fig = px.bar(errors['errorID'].value_counts(), width=600, height=400)
-            st.plotly_chart(fig)
-            fig2 = px.pie(errors, values=errors['errorID'].value_counts(),names=errors['errorID'].value_counts().keys(), width=600, height=400)
-            st.plotly_chart(fig2)
+            fig = px.bar(errors['errorID'].value_counts(), width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+            fig2 = px.pie(errors, values=errors['errorID'].value_counts(),names=errors['errorID'].value_counts().keys(), width=width, height=height)
+            st.plotly_chart(fig2, use_container_width=True)
         if features == 'Erreurs selon les modèles + moyenne par machine':
     	    #Errors by model
             fig2 = px.bar(errorsbymodel, x='model', y=[errorsbymodel.error1, errorsbymodel.error2, errorsbymodel.error3, errorsbymodel.error4, errorsbymodel.error5],
                         barmode='group',
-                        width=600, height=400
+                        width=width, height=height
                         )
-            st.plotly_chart(fig2)
+            st.plotly_chart(fig2, use_container_width=True)
         if features == 'Erreurs selon les ages + moyenne par machine':
             df = pd.merge(errors, machines)
             fig = px.histogram(df, x='age' ,
@@ -215,15 +217,15 @@ if selected_metrics == 'Dashboard':
                                 #log_y=True, # represent bars with log scale
                                 nbins= 50,
                                 labels={'value':'age'}, # can specify one label per df column)
-                                width=600, height=400
+                                width=width, height=height
             )
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
 
             fig2 = px.bar(errorsbyage, x='age', y=[errorsbyage.error1, errorsbyage.error2, errorsbyage.error3, errorsbyage.error4, errorsbyage.error5],
                         barmode='group',
-                        width=600, height=400
+                        width=width, height=height
                         )
-            st.plotly_chart(fig2)
+            st.plotly_chart(fig2, use_container_width=True)
 
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- 2 columns
@@ -235,25 +237,51 @@ if selected_metrics == 'Dashboard':
     #--------------------------------- ---------------------------------  ---------------------------------
 
     with lin1:
-        selected_feature = st.selectbox(
-                label="Choisissez un capteur de télémétrie", options=['volt', 'rotate', 'vibration', 'pressure']
-                )
 
-        st.write(selected_feature + " pour toutes les machines")
-        
-        fig = px.histogram(telemetry, x=selected_feature, nbins=1000, width=1200, height=400)
+        fig = px.histogram(telemetry, x='volt', nbins=1000, width=width, height=height)
         st.plotly_chart(fig)
+        selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
+        st.write('volt' + " pour la machine " + str(selected_machine1))
+        plot = telemetry[
+            telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime")
+
+        fig = px.line(plot, width=width, height=height)
+        st.plotly_chart(fig, use_container_width=True)
+
+
+        fig = px.histogram(telemetry, x='rotate', nbins=1000, width=width, height=height)
+        st.plotly_chart(fig)
+        selected_machine2 = st.slider("Choisissez une machine pour la rotation", 1, 100)
+        st.write('rotate' + " pour la machine " + str(selected_machine2))
+        plot = telemetry[
+            telemetry.machineID == selected_machine2][["datetime", 'rotate']].set_index("datetime")
+
+        fig = px.line(plot, width=width, height=height)
+        st.plotly_chart(fig, use_container_width=True)
 
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- telemetry machine
     #--------------------------------- ---------------------------------  ---------------------------------
 
     with lin2:
-        selected_machine = st.slider("Pick a machine", 1, 100)
-        st.write(selected_feature + " pour la machine " + str(selected_machine))
-        plot = telemetry[
-            telemetry.machineID == selected_machine][["datetime", selected_feature]].set_index("datetime")
-
-        fig = px.line(plot, width=1200, height=400)
+        fig = px.histogram(telemetry, x='vibration', nbins=1000, width=width, height=height)
         st.plotly_chart(fig)
+        selected_machine3 = st.slider("Choisissez une machine pour la vibration", 1, 100)
+        st.write('vibration' + " pour la machine " + str(selected_machine3))
+        plot = telemetry[
+            telemetry.machineID == selected_machine3][["datetime", 'vibration']].set_index("datetime")
+
+        fig = px.line(plot, width=width, height=height)
+        st.plotly_chart(fig, use_container_width=True)
+
+
+        fig = px.histogram(telemetry, x='pressure', nbins=1000, width=width, height=height)
+        st.plotly_chart(fig)
+        selected_machine4 = st.slider("Choisissez une machine pour la pression", 1, 100)
+        st.write('pressure' + " pour la machine " + str(selected_machine4))
+        plot = telemetry[
+            telemetry.machineID == selected_machine4][["datetime", 'pressure']].set_index("datetime")
+
+        fig = px.line(plot, width=width, height=height)
+        st.plotly_chart(fig, use_container_width=True)
 
