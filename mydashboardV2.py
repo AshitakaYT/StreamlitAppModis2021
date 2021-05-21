@@ -7,6 +7,8 @@ from streamlit_echarts import st_echarts
 import plotly.express as px
 from Helper import loadData
 
+import streamlit.components.v1 as components
+
 #--------------------------------- ---------------------------------  ---------------------------------
 #--------------------------------- Ingestion
 #--------------------------------- ---------------------------------  ---------------------------------
@@ -27,9 +29,10 @@ sincelastfail = loadData('./sincelastfail.csv')
 
 
 selected_metrics = st.sidebar.selectbox(
-    label="Choose...", options=['Explications sur les datasets','Analyse de données','Etat de santé systeme']
+    label="Choose...", options=['Explications sur les datasets','Etat de santé systeme','Télémétrie']
     )
 if selected_metrics == 'Explications sur les datasets':
+
     st.write("# EXPLICATIONS SUR LE JEU DE DONNEES")
     st.write("""
         ### Cette app permet l'analyse visuelle du jeu de données de maintenance prédictive d'Azure.
@@ -50,7 +53,7 @@ if selected_metrics == 'Explications sur les datasets':
             -le listing de chaque machine, de leur modèle et de leur age (machines.csv)\n
             ### Afin d'utiliser le dashboard de manière optimale, choisissez 'Dashboard' dans le menu a gauche, puis fermez celui ci.
             """)
-if selected_metrics == 'Analyse de données':
+if selected_metrics == 'Etat de santé systeme':
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- 4 columns
     #--------------------------------- ---------------------------------  ---------------------------------
@@ -231,33 +234,75 @@ if selected_metrics == 'Analyse de données':
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- telemetry whole
     #--------------------------------- ---------------------------------  ---------------------------------
-if selected_metrics == 'Etat de santé systeme':
+if selected_metrics == 'Télémétrie':
     lin1, lin2 = st.beta_columns((6, 6))
     width = 1200
-    height = 600
+    height = 400
+    times = ["1 day", "1 week", "1 year"]
+
+
     with lin1:
-        
-        #selected_feature = st.selectbox(
-        #        label="Choisissez un capteur de télémétrie", options=['volt', 'rotate', 'vibration', 'pressure']
-        #        )
+        time = st.radio("Choisissez une analyse de voltage", times)
 
-        #st.write(selected_feature + " pour toutes les machines")
-        
-        selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
-        st.write('volt' + " pour la machine " + str(selected_machine1))
-        plot = telemetry[
-            telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime")
+        if time == '1 year':
 
-        fig = px.line(plot, width=width, height=height)
-        st.plotly_chart(fig, use_container_width=True)
+            selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
+            st.write('volt' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime").tail(12 * 7 * 52)
 
-        selected_machine2 = st.slider("Choisissez une machine pour la rotation", 1, 100)
-        st.write('rotate' + " pour la machine " + str(selected_machine2))
-        plot = telemetry[
-            telemetry.machineID == selected_machine2][["datetime", 'rotate']].set_index("datetime")
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
 
-        fig = px.line(plot, width=width, height=height)
-        st.plotly_chart(fig, use_container_width=True)
+
+        elif time == '1 week':    
+            selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
+            st.write('volt' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime").tail(12 * 7)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif time == '1 day':    
+            selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
+            st.write('volt' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime").tail(12)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+
+        time= st.radio("Choisissez une analyse de rotation", times)
+
+        if time == '1 year':
+
+            selected_machine1 = st.slider("Choisissez une machine pour la  rotation", 1, 100)
+            st.write('rotate' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'rotate']].set_index("datetime").tail(12 * 7 * 52)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+
+
+        elif time == '1 week':    
+            selected_machine1 = st.slider("Choisissez une machine pour la rotation", 1, 100)
+            st.write('rotate' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'rotate']].set_index("datetime").tail(12 * 7)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif time == '1 day':    
+            selected_machine1 = st.slider("Choisissez une machine pour la rotation", 1, 100)
+            st.write('rotate' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'rotate']].set_index("datetime").tail(12)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
 
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- telemetry machine
@@ -265,22 +310,67 @@ if selected_metrics == 'Etat de santé systeme':
 
     with lin2:
 
-        selected_machine3 = st.slider("Choisissez une machine pour la vibration", 1, 100)
-        st.write('vibration' + " pour la machine " + str(selected_machine3))
-        plot = telemetry[
-            telemetry.machineID == selected_machine3][["datetime", 'vibration']].set_index("datetime")
+        time = st.radio("Choisissez une analyse de vibration", times)
 
-        fig = px.line(plot, width=width, height=height)
-        st.plotly_chart(fig, use_container_width=True)
+        if time == '1 year':
 
-        selected_machine4 = st.slider("Choisissez une machine pour la pression", 1, 100)
-        st.write('pressure' + " pour la machine " + str(selected_machine4))
-        plot = telemetry[
-            telemetry.machineID == selected_machine4][["datetime", 'pressure']].set_index("datetime")
+            selected_machine1 = st.slider("Choisissez une machine pour la vibration", 1, 100)
+            st.write('vibration' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'vibration']].set_index("datetime").tail(12 * 7 * 52)
 
-        fig = px.line(plot, width=width, height=height)
-        st.plotly_chart(fig, use_container_width=True)
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
 
+
+        elif time == '1 week':    
+            selected_machine1 = st.slider("Choisissez une machine pour le vibration", 1, 100)
+            st.write('vibration' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'vibration']].set_index("datetime").tail(12 * 7)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif time == '1 day':    
+            selected_machine1 = st.slider("Choisissez une machine pour le vibration", 1, 100)
+            st.write('vibration' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'vibration']].set_index("datetime").tail(12)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+
+        time= st.radio("Choisissez une analyse de pression", times)
+
+        if time == '1 year':
+
+            selected_machine1 = st.slider("Choisissez une machine pour la  pression", 1, 100)
+            st.write('pressure' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'pressure']].set_index("datetime").tail(12 * 7 * 52)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+
+
+        elif time == '1 week':    
+            selected_machine1 = st.slider("Choisissez une machine pour la pression", 1, 100)
+            st.write('pressure' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'pressure']].set_index("datetime").tail(12 * 7)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif time == '1 day':    
+            selected_machine1 = st.slider("Choisissez une machine pour la pression", 1, 100)
+            st.write('pressure' + " pour la machine " + str(selected_machine1))
+            plot = telemetry[
+                telemetry.machineID == selected_machine1][["datetime", 'pressure']].set_index("datetime").tail(12)
+
+            fig = px.line(plot, width=width, height=height)
+            st.plotly_chart(fig, use_container_width=True)
 
 
 
