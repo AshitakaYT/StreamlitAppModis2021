@@ -6,6 +6,10 @@ from PIL import Image
 from streamlit_echarts import st_echarts
 import plotly.express as px
 from Helper import loadData
+from Helper import get_days
+import plotly.graph_objects as go
+import datetime
+
 
 import streamlit.components.v1 as components
 
@@ -29,7 +33,7 @@ sincelastfail = loadData('./sincelastfail.csv')
 
 
 selected_metrics = st.sidebar.selectbox(
-    label="Choose...", options=['Explications sur les datasets','Etat de santé systeme','Télémétrie']
+    label="Choose...", options=['Explications sur les datasets','Etat de santé systeme','Télémétrie','Maintenance']
     )
 if selected_metrics == 'Explications sur les datasets':
 
@@ -373,5 +377,261 @@ if selected_metrics == 'Télémétrie':
             st.plotly_chart(fig, use_container_width=True)
 
 
+if selected_metrics == 'Maintenance':
 
-    
+    def get_days(df, kind, failure, machine):
+        first_time = df['datetime'].loc[(df[kind] == failure) & (df.machineID == machine)]
+        if len(first_time) == 0:
+            return(365)
+        first_time = first_time.iloc[len(first_time) - 1]
+
+        later_time = df['datetime'].iloc[len(df['datetime']) - 1]
+
+        first_times = datetime.datetime.strptime(first_time,'%Y-%m-%d %H:%M:%S')
+        later_times = datetime.datetime.strptime(later_time,'%Y-%m-%d %H:%M:%S')
+
+        difference = later_times - first_times
+
+        seconds_in_day = 24 * 60 * 60
+
+        duration_in_s = difference.total_seconds()
+        days  = difference.days                         # Build-in datetime function
+        days  = divmod(duration_in_s, 86400)[0]
+        return(days)
+
+    dayssincelastfailure = pd.merge(telemetry, failures, how = 'outer')
+    dayssincelastmaint = pd.merge(telemetry, maint, how= 'outer')
+    maint1, maint2 = st.beta_columns((6, 6))
+    width = 1200
+    height = 400
+
+    with maint1:
+
+        selected_machine1 = st.slider("Choisissez une machine", 1, 100)
+        st.write('JOURS DEPUIS LA DERNIERE DEFAILLANCE DES PIECES POUR LA MACHINE ' + str(selected_machine1))
+
+    with maint2:
+
+        selected_machine2 = st.slider("Choisissez une machine (maintenance)", 1, 100)
+        st.write('JOURS DEPUIS LA DERNIERE MAINTENANCE DES PIECES POUR LA MACHINE ' + str(selected_machine2))
+
+    maintquad1, maintquad2, maintquad3, maintquad4 = st.beta_columns((3, 3, 3, 3))
+    with maintquad1:
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number+delta",
+            value = get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1),
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            title = {'text': "Pièce 1", 'font': {'size': 24}},
+            delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
+            gauge = {
+                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
+                'bar': {'color': "darkblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 250], 'color': 'cyan'},
+                    {'range': [250, 400], 'color': 'royalblue'}],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 300}}))
+
+        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number+delta",
+            value = get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1),
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            title = {'text': "Pièce 2", 'font': {'size': 24}},
+            delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
+            gauge = {
+                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
+                'bar': {'color': "darkblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 250], 'color': 'cyan'},
+                    {'range': [250, 400], 'color': 'royalblue'}],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 300}}))
+
+        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    with maintquad2:
+
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number+delta",
+            value = get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1),
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            title = {'text': "Pièce 3", 'font': {'size': 24}},
+            delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
+            gauge = {
+                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
+                'bar': {'color': "darkblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 250], 'color': 'cyan'},
+                    {'range': [250, 400], 'color': 'royalblue'}],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 300}}))
+
+        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number+delta",
+            value = get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1),
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            title = {'text': "Pièce 4", 'font': {'size': 24}},
+            delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
+            gauge = {
+                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
+                'bar': {'color': "darkblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 250], 'color': 'cyan'},
+                    {'range': [250, 400], 'color': 'royalblue'}],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 300}}))
+
+        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    with maintquad3:
+        
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number+delta",
+            value = get_days(dayssincelastmaint,'comp', 'comp1', selected_machine2),
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            title = {'text': "Pièce 1", 'font': {'size': 24}},
+            delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
+            gauge = {
+                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
+                'bar': {'color': "darkblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 250], 'color': 'cyan'},
+                    {'range': [250, 400], 'color': 'royalblue'}],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 300}}))
+
+        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number+delta",
+            value = get_days(dayssincelastmaint,'comp', 'comp3', selected_machine2),
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            title = {'text': "Pièce 2", 'font': {'size': 24}},
+            delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
+            gauge = {
+                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
+                'bar': {'color': "darkblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 250], 'color': 'cyan'},
+                    {'range': [250, 400], 'color': 'royalblue'}],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 300}}))
+
+        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    with maintquad4:
+        
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number+delta",
+            value = get_days(dayssincelastmaint,'comp', 'comp3', selected_machine2),
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            title = {'text': "Pièce 3", 'font': {'size': 24}},
+            delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
+            gauge = {
+                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
+                'bar': {'color': "darkblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 250], 'color': 'cyan'},
+                    {'range': [250, 400], 'color': 'royalblue'}],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 300}}))
+
+        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        fig = go.Figure(go.Indicator(
+            mode = "gauge+number+delta",
+            value = get_days(dayssincelastmaint,'comp', 'comp4', selected_machine2),
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            title = {'text': "Pièce 4", 'font': {'size': 24}},
+            delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
+            gauge = {
+                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
+                'bar': {'color': "darkblue"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+                'steps': [
+                    {'range': [0, 250], 'color': 'cyan'},
+                    {'range': [250, 400], 'color': 'royalblue'}],
+                'threshold': {
+                    'line': {'color': "red", 'width': 4},
+                    'thickness': 0.75,
+                    'value': 300}}))
+
+        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+        st.plotly_chart(fig, use_container_width=True)
+
+
+    maint1, maint2 = st.beta_columns((6, 6))
+    width = 1200
+    height = 400
+
+    with maint1:
+        st.write('HISTORIQUE DES DERNIERES DEFAILLANCE DES PIECES POUR LA MACHINE ' + str(selected_machine1))
+        plot = failures[
+            failures.machineID == selected_machine1][["datetime", 'failure']].set_index("datetime")
+
+        fig = px.scatter(plot, width=width, height=height)
+        st.plotly_chart(fig, use_container_width=True)
+
+    with maint2:
+        st.write('HISTORIQUE DES DERNIERES MAINTENANCES DES PIECES POUR LA MACHINE ' + str(selected_machine1))
+        plot = maint[
+            maint.machineID == selected_machine1][["datetime", 'comp']].set_index("datetime")
+
+        fig = px.scatter(plot, width=width, height=height)
+        st.plotly_chart(fig, use_container_width=True)
