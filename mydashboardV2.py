@@ -6,7 +6,6 @@ from PIL import Image
 from streamlit_echarts import st_echarts
 import plotly.express as px
 from Helper import loadData
-from Helper import get_days
 import plotly.graph_objects as go
 import datetime
 
