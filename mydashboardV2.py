@@ -421,7 +421,7 @@ if selected_metrics == 'Maintenance':
             mode = "gauge+number+delta",
             value = get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1),
             domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 1", 'font': {'size': 24}},
+            title = {'text': "Pièce 1", 'font': {'size': 20}},
             delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
             gauge = {
                 'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -437,7 +437,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -445,7 +445,7 @@ if selected_metrics == 'Maintenance':
             mode = "gauge+number+delta",
             value = get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1),
             domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 2", 'font': {'size': 24}},
+            title = {'text': "Pièce 2", 'font': {'size': 20}},
             delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
             gauge = {
                 'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -461,7 +461,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -471,7 +471,7 @@ if selected_metrics == 'Maintenance':
             mode = "gauge+number+delta",
             value = get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1),
             domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 3", 'font': {'size': 24}},
+            title = {'text': "Pièce 3", 'font': {'size': 20}},
             delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
             gauge = {
                 'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -487,7 +487,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -495,7 +495,7 @@ if selected_metrics == 'Maintenance':
             mode = "gauge+number+delta",
             value = get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1),
             domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 4", 'font': {'size': 24}},
+            title = {'text': "Pièce 4", 'font': {'size': 20}},
             delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
             gauge = {
                 'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -511,7 +511,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -521,7 +521,7 @@ if selected_metrics == 'Maintenance':
             mode = "gauge+number+delta",
             value = get_days(dayssincelastmaint,'comp', 'comp1', selected_machine2),
             domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 1", 'font': {'size': 24}},
+            title = {'text': "Pièce 1", 'font': {'size': 20}},
             delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
             gauge = {
                 'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -537,7 +537,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -545,7 +545,7 @@ if selected_metrics == 'Maintenance':
             mode = "gauge+number+delta",
             value = get_days(dayssincelastmaint,'comp', 'comp3', selected_machine2),
             domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 2", 'font': {'size': 24}},
+            title = {'text': "Pièce 2", 'font': {'size': 20}},
             delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
             gauge = {
                 'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -561,7 +561,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -571,7 +571,7 @@ if selected_metrics == 'Maintenance':
             mode = "gauge+number+delta",
             value = get_days(dayssincelastmaint,'comp', 'comp3', selected_machine2),
             domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 3", 'font': {'size': 24}},
+            title = {'text': "Pièce 3", 'font': {'size': 20}},
             delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
             gauge = {
                 'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -587,7 +587,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -595,7 +595,7 @@ if selected_metrics == 'Maintenance':
             mode = "gauge+number+delta",
             value = get_days(dayssincelastmaint,'comp', 'comp4', selected_machine2),
             domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 4", 'font': {'size': 24}},
+            title = {'text': "Pièce 4", 'font': {'size': 20}},
             delta = {'reference': 300, 'increasing': {'color': "RebeccaPurple"}},
             gauge = {
                 'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
@@ -611,7 +611,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
