@@ -437,7 +437,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -461,7 +461,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -487,7 +487,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -511,7 +511,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -537,7 +537,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -561,7 +561,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -587,7 +587,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -611,7 +611,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(height = 300, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
