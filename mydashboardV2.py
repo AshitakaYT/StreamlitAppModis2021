@@ -38,8 +38,7 @@ if selected_metrics == 'Explications sur les datasets':
 
     st.write("# EXPLICATIONS SUR LE JEU DE DONNEES")
     st.write("""
-        ### Cette app permet l'analyse visuelle du jeu de données de maintenance prédictive d'Azure.
-        Avant de présenter les datasets, il est essentiel de comprendre quel sujet ils traitent.
+        Avant de présenter les datasets*, il est essentiel de comprendre quel sujet ils traitent.
         Le jeu de données analyse un lot de 100 machines telles que :
         """)
     title_image = Image.open("./Machine.PNG")
@@ -54,7 +53,8 @@ if selected_metrics == 'Explications sur les datasets':
             -l'historique pour l'année 2015 de tous les remplacements de pièce effectués (failures.csv)\n
             -l'historique pour l'année 2015 de tous les enregistrements d'erreurs (errors.csv)\n
             -le listing de chaque machine, de leur modèle et de leur age (machines.csv)\n
-            ### Afin d'utiliser le dashboard de manière optimale, choisissez 'Dashboard' dans le menu a gauche, puis fermez celui ci.
+
+            *lien de téléchargement : https://github.com/ThereIsNoSpoonMrAnderson/StreamlitAppModis2021
             """)
 if selected_metrics == 'Etat de santé systeme':
     #--------------------------------- ---------------------------------  ---------------------------------
@@ -72,7 +72,7 @@ if selected_metrics == 'Etat de santé systeme':
         features = st.selectbox(label="Choisissez une analyse liée a l'age", options=["Répartition de l'age des machines",'Modèles selon les ages','Erreurs selon les ages + moyenne par machine','Failures selon les ages + moyenne par machine'])
 
         if features == "Répartition de l'age des machines":
-            fig = px.bar(machines['age'].value_counts(), width=width, height=height)
+            fig = px.bar(machines['age'].value_counts(), width=width, height=height, labels={'index':'age', 'value': 'nombre de machines'})
             st.plotly_chart(fig, use_container_width=True)
             fig2 = px.pie(machines, values=machines['age'].value_counts(),names=machines['age'].value_counts().keys(), width=width, height=height)
             st.plotly_chart(fig2, use_container_width=True)
@@ -82,7 +82,7 @@ if selected_metrics == 'Etat de santé systeme':
                                 color='model',
                                 #log_y=True, # represent bars with log scale
                                 nbins= 50,
-                                labels={'value':'age'}, # can specify one label per df column)
+                                labels={'value':'nombre de machines'}, # can specify one label per df column)
                                 width=width, height=height
             )
             st.plotly_chart(fig, use_container_width=True)
@@ -93,13 +93,14 @@ if selected_metrics == 'Etat de santé systeme':
                                 color='failure',
                                 #log_y=True, # represent bars with log scale
                                 nbins= 50,
-                                labels={'value':'age'}, # can specify one label per df column)
+                                labels={'count':'nombre de défaillances'}, # can specify one label per df column)
                                 width=width, height=height
             )
             st.plotly_chart(fig, use_container_width=True)
 
             fig2 = px.bar(failuresbyage, x='age', y=[failuresbyage.comp1, failuresbyage.comp2, failuresbyage.comp3, failuresbyage.comp4],
                         barmode='group',
+                        labels={'value':'nombre de défaillances'}, # can specify one label per df column)
                         width=width, height=height
                         )
             st.plotly_chart(fig2, use_container_width=True)
@@ -110,7 +111,7 @@ if selected_metrics == 'Etat de santé systeme':
                                 color='errorID',
                                 #log_y=True, # represent bars with log scale
                                 nbins= 50,
-                                labels={'value':'age'},
+                                labels={'value':'age', 'count':"nombre d'erreurs"},
                                 width=width, height=height # can specify one label per df column)
             )
             st.plotly_chart(fig, use_container_width=True)
@@ -128,7 +129,7 @@ if selected_metrics == 'Etat de santé systeme':
     	label="Choisissez une analyse liée au modèles", options=["Répartition des modèles",'Modèles selon les ages','Erreurs selon les modèles (moyenne par machine)','Failures selon les modèles (moyenne par machine)']
     	)
         if features == "Répartition des modèles":
-            fig = px.bar(machines['model'].value_counts(), width=width, height=height)
+            fig = px.bar(machines['model'].value_counts(), width=width, height=height, labels={'index':'modèles', 'value': 'nombre de machines'})
             st.plotly_chart(fig, use_container_width=True)
             fig2 = px.pie(machines, values=machines['model'].value_counts(),names=machines['model'].value_counts().keys(), width=width, height=height)
             st.plotly_chart(fig2, use_container_width=True)
@@ -168,7 +169,7 @@ if selected_metrics == 'Etat de santé systeme':
         label="Choisissez une analyse liée aux failures", options=['Répartition des failures','Failures selon les ages + moyenne par machine','Failures selon les modèles + moyenne par machine']
     	)
         if features == 'Répartition des failures':
-            fig = px.bar(failures['failure'].value_counts(), width=width, height=height)
+            fig = px.bar(failures['failure'].value_counts(), width=width, height=height, labels={'index':'failures', 'value': 'nombre de machines'})
             st.plotly_chart(fig, use_container_width=True)
             fig2 = px.pie(failures, values=failures['failure'].value_counts(),names=failures['failure'].value_counts().keys(), width=width, height=height)
             st.plotly_chart(fig2, use_container_width=True)
@@ -205,7 +206,7 @@ if selected_metrics == 'Etat de santé systeme':
         label="Choisissez une analyse liée aux erreurs", options=['Répartition des erreurs','Erreurs selon les ages + moyenne par machine','Erreurs selon les modèles + moyenne par machine']
         )
         if features =='Répartition des erreurs':
-            fig = px.bar(errors['errorID'].value_counts(), width=width, height=height)
+            fig = px.bar(errors['errorID'].value_counts(), width=width, height=height, labels={'index':'erreurs', 'value': 'nombre de machines'})
             st.plotly_chart(fig, use_container_width=True)
             fig2 = px.pie(errors, values=errors['errorID'].value_counts(),names=errors['errorID'].value_counts().keys(), width=width, height=height)
             st.plotly_chart(fig2, use_container_width=True)
@@ -241,13 +242,13 @@ if selected_metrics == 'Télémétrie':
     lin1, lin2 = st.beta_columns((6, 6))
     width = 1200
     height = 400
-    times = ["1 day", "1 week", "1 year"]
+    times = ["1 jour", "1 semaine", "1 mois"]
 
 
     with lin1:
         time = st.radio("Choisissez une analyse de voltage", times)
 
-        if time == '1 year':
+        if time == '1 mois':
 
             selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
             st.write('volt' + " pour la machine " + str(selected_machine1))
@@ -258,7 +259,7 @@ if selected_metrics == 'Télémétrie':
             st.plotly_chart(fig, use_container_width=True)
 
 
-        elif time == '1 week':    
+        elif time == '1 semaine':    
             selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
             st.write('volt' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
@@ -267,7 +268,7 @@ if selected_metrics == 'Télémétrie':
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
 
-        elif time == '1 day':    
+        elif time == '1 jour':    
             selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
             st.write('volt' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
@@ -278,7 +279,7 @@ if selected_metrics == 'Télémétrie':
 
         time= st.radio("Choisissez une analyse de rotation", times)
 
-        if time == '1 year':
+        if time == '1 mois':
 
             selected_machine1 = st.slider("Choisissez une machine pour la  rotation", 1, 100)
             st.write('rotate' + " pour la machine " + str(selected_machine1))
@@ -289,7 +290,7 @@ if selected_metrics == 'Télémétrie':
             st.plotly_chart(fig, use_container_width=True)
 
 
-        elif time == '1 week':    
+        elif time == '1 semaine':    
             selected_machine1 = st.slider("Choisissez une machine pour la rotation", 1, 100)
             st.write('rotate' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
@@ -298,7 +299,7 @@ if selected_metrics == 'Télémétrie':
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
 
-        elif time == '1 day':    
+        elif time == '1 jour':    
             selected_machine1 = st.slider("Choisissez une machine pour la rotation", 1, 100)
             st.write('rotate' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
@@ -315,7 +316,7 @@ if selected_metrics == 'Télémétrie':
 
         time = st.radio("Choisissez une analyse de vibration", times)
 
-        if time == '1 year':
+        if time == '1 mois':
 
             selected_machine1 = st.slider("Choisissez une machine pour la vibration", 1, 100)
             st.write('vibration' + " pour la machine " + str(selected_machine1))
@@ -326,7 +327,7 @@ if selected_metrics == 'Télémétrie':
             st.plotly_chart(fig, use_container_width=True)
 
 
-        elif time == '1 week':    
+        elif time == '1 semaine':    
             selected_machine1 = st.slider("Choisissez une machine pour le vibration", 1, 100)
             st.write('vibration' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
@@ -335,7 +336,7 @@ if selected_metrics == 'Télémétrie':
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
 
-        elif time == '1 day':    
+        elif time == '1 jour':    
             selected_machine1 = st.slider("Choisissez une machine pour le vibration", 1, 100)
             st.write('vibration' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
@@ -346,7 +347,7 @@ if selected_metrics == 'Télémétrie':
 
         time= st.radio("Choisissez une analyse de pression", times)
 
-        if time == '1 year':
+        if time == '1 mois':
 
             selected_machine1 = st.slider("Choisissez une machine pour la  pression", 1, 100)
             st.write('pressure' + " pour la machine " + str(selected_machine1))
@@ -357,7 +358,7 @@ if selected_metrics == 'Télémétrie':
             st.plotly_chart(fig, use_container_width=True)
 
 
-        elif time == '1 week':    
+        elif time == '1 semaine':    
             selected_machine1 = st.slider("Choisissez une machine pour la pression", 1, 100)
             st.write('pressure' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
@@ -366,7 +367,7 @@ if selected_metrics == 'Télémétrie':
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
 
-        elif time == '1 day':    
+        elif time == '1 jour':    
             selected_machine1 = st.slider("Choisissez une machine pour la pression", 1, 100)
             st.write('pressure' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
@@ -406,7 +407,7 @@ if selected_metrics == 'Maintenance':
 
     with maint1:
 
-        selected_machine1 = st.slider("Choisissez une machine", 1, 100)
+        selected_machine1 = st.slider("Choisissez une machine (défaillance)", 1, 100)
         st.write('JOURS DEPUIS LA DERNIERE DEFAILLANCE DES PIECES POUR LA MACHINE ' + str(selected_machine1))
 
     with maint2:
@@ -436,7 +437,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -460,7 +461,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -486,7 +487,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -510,7 +511,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -536,7 +537,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -560,7 +561,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -586,7 +587,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -610,7 +611,7 @@ if selected_metrics == 'Maintenance':
                     'thickness': 0.75,
                     'value': 300}}))
 
-        fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(height = 400, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
