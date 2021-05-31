@@ -28,7 +28,7 @@ errorsbyage = loadData('./errorsbyage.csv')
 failuresbyage = loadData('./failuresbyage.csv')
 failuresbymodel = loadData('./failuresbymodel.csv')
 sincelastfail = loadData('./sincelastfail.csv')
-
+days_between_failures = loadData('./days_between_failures.csv')
 
 
 selected_metrics = st.sidebar.selectbox(
@@ -253,7 +253,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
             st.write('volt' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime").tail(12 * 7 * 52)
+                telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime").tail(25 * 7 * 4)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -263,7 +263,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
             st.write('volt' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime").tail(12 * 7)
+                telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime").tail(25 * 7)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -272,7 +272,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour le voltage", 1, 100)
             st.write('volt' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime").tail(12)
+                telemetry.machineID == selected_machine1][["datetime", 'volt']].set_index("datetime").tail(25)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -284,7 +284,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour la  rotation", 1, 100)
             st.write('rotate' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'rotate']].set_index("datetime").tail(12 * 7 * 52)
+                telemetry.machineID == selected_machine1][["datetime", 'rotate']].set_index("datetime").tail(25 * 7 * 4)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -294,7 +294,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour la rotation", 1, 100)
             st.write('rotate' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'rotate']].set_index("datetime").tail(12 * 7)
+                telemetry.machineID == selected_machine1][["datetime", 'rotate']].set_index("datetime").tail(25 * 7)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -303,7 +303,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour la rotation", 1, 100)
             st.write('rotate' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'rotate']].set_index("datetime").tail(12)
+                telemetry.machineID == selected_machine1][["datetime", 'rotate']].set_index("datetime").tail(25)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -321,7 +321,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour la vibration", 1, 100)
             st.write('vibration' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'vibration']].set_index("datetime").tail(12 * 7 * 52)
+                telemetry.machineID == selected_machine1][["datetime", 'vibration']].set_index("datetime").tail(25 * 7 * 4)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -331,7 +331,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour le vibration", 1, 100)
             st.write('vibration' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'vibration']].set_index("datetime").tail(12 * 7)
+                telemetry.machineID == selected_machine1][["datetime", 'vibration']].set_index("datetime").tail(25 * 7)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -340,7 +340,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour le vibration", 1, 100)
             st.write('vibration' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'vibration']].set_index("datetime").tail(12)
+                telemetry.machineID == selected_machine1][["datetime", 'vibration']].set_index("datetime").tail(25)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -352,7 +352,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour la  pression", 1, 100)
             st.write('pressure' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'pressure']].set_index("datetime").tail(12 * 7 * 52)
+                telemetry.machineID == selected_machine1][["datetime", 'pressure']].set_index("datetime").tail(25 * 7 * 4)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -362,7 +362,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour la pression", 1, 100)
             st.write('pressure' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'pressure']].set_index("datetime").tail(12 * 7)
+                telemetry.machineID == selected_machine1][["datetime", 'pressure']].set_index("datetime").tail(25 * 7)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -371,7 +371,7 @@ if selected_metrics == 'Télémétrie':
             selected_machine1 = st.slider("Choisissez une machine pour la pression", 1, 100)
             st.write('pressure' + " pour la machine " + str(selected_machine1))
             plot = telemetry[
-                telemetry.machineID == selected_machine1][["datetime", 'pressure']].set_index("datetime").tail(12)
+                telemetry.machineID == selected_machine1][["datetime", 'pressure']].set_index("datetime").tail(25)
 
             fig = px.line(plot, width=width, height=height)
             st.plotly_chart(fig, use_container_width=True)
@@ -430,14 +430,14 @@ if selected_metrics == 'Maintenance':
                 'borderwidth': 2,
                 'bordercolor': "gray",
                 'steps': [
-                    {'range': [0, 250], 'color': 'cyan'},
-                    {'range': [250, 400], 'color': 'royalblue'}],
+                    {'range': [0, days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.mean()], 'color': 'white'},
+                    {'range': [days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.mean(), 500], 'color': 'orange'}],
                 'threshold': {
                     'line': {'color': "red", 'width': 4},
                     'thickness': 0.75,
-                    'value': 300}}))
+                    'value': days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.std()}}))
 
-        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
         st.plotly_chart(fig, use_container_width=True)
 
@@ -454,12 +454,12 @@ if selected_metrics == 'Maintenance':
                 'borderwidth': 2,
                 'bordercolor': "gray",
                 'steps': [
-                    {'range': [0, 250], 'color': 'cyan'},
-                    {'range': [250, 400], 'color': 'royalblue'}],
+                    {'range': [0, days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.mean()], 'color': 'white'},
+                    {'range': [days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.mean(), 500], 'color': 'orange'}],
                 'threshold': {
                     'line': {'color': "red", 'width': 4},
                     'thickness': 0.75,
-                    'value': 300}}))
+                    'value': days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.std()}}))
 
         fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
@@ -480,12 +480,12 @@ if selected_metrics == 'Maintenance':
                 'borderwidth': 2,
                 'bordercolor': "gray",
                 'steps': [
-                    {'range': [0, 250], 'color': 'cyan'},
-                    {'range': [250, 400], 'color': 'royalblue'}],
+                    {'range': [0, days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.mean()], 'color': 'white'},
+                    {'range': [days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.mean(), 500], 'color': 'orange'}],
                 'threshold': {
                     'line': {'color': "red", 'width': 4},
                     'thickness': 0.75,
-                    'value': 300}}))
+                    'value': days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.std()}}))
 
         fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
@@ -504,12 +504,12 @@ if selected_metrics == 'Maintenance':
                 'borderwidth': 2,
                 'bordercolor': "gray",
                 'steps': [
-                    {'range': [0, 250], 'color': 'cyan'},
-                    {'range': [250, 400], 'color': 'royalblue'}],
+                    {'range': [0, days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.mean()], 'color': 'white'},
+                    {'range': [days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.mean(), 500], 'color': 'orange'}],
                 'threshold': {
                     'line': {'color': "red", 'width': 4},
                     'thickness': 0.75,
-                    'value': 300}}))
+                    'value': days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.std()}}))
 
         fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
@@ -530,12 +530,12 @@ if selected_metrics == 'Maintenance':
                 'borderwidth': 2,
                 'bordercolor': "gray",
                 'steps': [
-                    {'range': [0, 250], 'color': 'cyan'},
-                    {'range': [250, 400], 'color': 'royalblue'}],
+                    {'range': [0, 250], 'color': 'white'},
+                    {'range': [180, 500], 'color': 'orange'}],
                 'threshold': {
                     'line': {'color': "red", 'width': 4},
                     'thickness': 0.75,
-                    'value': 300}}))
+                    'value': 180}}))
 
         fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
@@ -554,12 +554,12 @@ if selected_metrics == 'Maintenance':
                 'borderwidth': 2,
                 'bordercolor': "gray",
                 'steps': [
-                    {'range': [0, 250], 'color': 'cyan'},
-                    {'range': [250, 400], 'color': 'royalblue'}],
+                    {'range': [0, 250], 'color': 'white'},
+                    {'range': [180, 500], 'color': 'orange'}],
                 'threshold': {
                     'line': {'color': "red", 'width': 4},
                     'thickness': 0.75,
-                    'value': 300}}))
+                    'value': 180}}))
 
         fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
@@ -580,12 +580,12 @@ if selected_metrics == 'Maintenance':
                 'borderwidth': 2,
                 'bordercolor': "gray",
                 'steps': [
-                    {'range': [0, 250], 'color': 'cyan'},
-                    {'range': [250, 400], 'color': 'royalblue'}],
+                    {'range': [0, 250], 'color': 'white'},
+                    {'range': [180, 500], 'color': 'orange'}],
                 'threshold': {
                     'line': {'color': "red", 'width': 4},
                     'thickness': 0.75,
-                    'value': 300}}))
+                    'value': 180}}))
 
         fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
@@ -604,12 +604,12 @@ if selected_metrics == 'Maintenance':
                 'borderwidth': 2,
                 'bordercolor': "gray",
                 'steps': [
-                    {'range': [0, 250], 'color': 'cyan'},
-                    {'range': [250, 400], 'color': 'royalblue'}],
+                    {'range': [0, 250], 'color': 'white'},
+                    {'range': [180, 500], 'color': 'orange'}],
                 'threshold': {
                     'line': {'color': "red", 'width': 4},
                     'thickness': 0.75,
-                    'value': 300}}))
+                    'value': 180}}))
 
         fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
@@ -629,7 +629,7 @@ if selected_metrics == 'Maintenance':
         st.plotly_chart(fig, use_container_width=True)
 
     with maint2:
-        st.write('HISTORIQUE DES DERNIERES MAINTENANCES DES PIECES POUR LA MACHINE ' + str(selected_machine1))
+        st.write('HISTORIQUE DES DERNIERES MAINTENANCES DES PIECES POUR LA MACHINE ' + str(selected_machine2))
         plot = maint[
             maint.machineID == selected_machine1][["datetime", 'comp']].set_index("datetime")
 
