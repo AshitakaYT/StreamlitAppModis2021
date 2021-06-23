@@ -463,7 +463,7 @@ if selected_metrics == 'Maintenance':
                 title = {'text': "Pièce 1", 'font': {'size': 20}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "green"},
+                    'bar': {'color': "darkblue"},
                     'bgcolor': "white",
                     'borderwidth': 2,
                     'bordercolor': "gray",
@@ -485,13 +485,13 @@ if selected_metrics == 'Maintenance':
                 delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.25, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "orange"},
+                    'bar': {'color': "darkblue"},
                     'steps': [
                         {'range': [0, get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.8 ], 'color': 'green'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.2 ], 'color': 'yellow'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.2, 500], 'color': 'red'},],
                     'threshold': {
-                        'line': {'color': "white", 'width': 1},
+                        'line': {'color': "white", 'width': 3},
                         'thickness': 0.75,
                         'value': get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.25 }}))
 
@@ -509,13 +509,13 @@ if selected_metrics == 'Maintenance':
                 delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.1, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "red"},
+                    'bar': {'color': "darkblue"},
                     'steps': [
                         {'range': [0, get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.8 ], 'color': 'green'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.95 ], 'color': 'yellow'},
-                        {'range': [get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) *0.95, 500], 'color': 'orange'},],
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) *0.95, 500], 'color': 'red'},],
                     'threshold': {
-                        'line': {'color': "white", 'width': 1},
+                        'line': {'color': "white", 'width': 3},
                         'thickness': 0.75,
                         'value': get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.1}}))
 
@@ -531,7 +531,7 @@ if selected_metrics == 'Maintenance':
                 title = {'text': "Pièce 2", 'font': {'size': 20}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "green"},
+                    'bar': {'color': "darkblue"},
                     'bgcolor': "white",
                     'borderwidth': 2,
                     'bordercolor': "gray",
@@ -553,13 +553,13 @@ if selected_metrics == 'Maintenance':
                 delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.25, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "orange"},
+                    'bar': {'color': "darkblue"},
                     'steps': [
                         {'range': [0, get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.8 ], 'color': 'green'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.2 ], 'color': 'yellow'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.2, 500], 'color': 'red'},],
                     'threshold': {
-                        'line': {'color': "white", 'width': 1},
+                        'line': {'color': "white", 'width': 3},
                         'thickness': 0.75,
                         'value': get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.25 }}))
 
@@ -577,13 +577,13 @@ if selected_metrics == 'Maintenance':
                 delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.1, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "red"},
+                    'bar': {'color': "darkblue"},
                     'steps': [
                         {'range': [0, get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.8 ], 'color': 'green'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.95 ], 'color': 'yellow'},
-                        {'range': [get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) *0.95, 500], 'color': 'orange'},],
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) *0.95, 500], 'color': 'red'},],
                     'threshold': {
-                        'line': {'color': "white", 'width': 1},
+                        'line': {'color': "white", 'width': 3},
                         'thickness': 0.75,
                         'value': get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.1}}))
 
@@ -631,7 +631,7 @@ if selected_metrics == 'Maintenance':
                 title = {'text': "Pièce 3", 'font': {'size': 20}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "green"},
+                    'bar': {'color': "darkblue"},
                     'bgcolor': "white",
                     'borderwidth': 2,
                     'bordercolor': "gray",
@@ -653,13 +653,13 @@ if selected_metrics == 'Maintenance':
                 delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.25, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "orange"},
+                    'bar': {'color': "darkblue"},
                     'steps': [
                         {'range': [0, get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.8 ], 'color': 'green'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.2 ], 'color': 'yellow'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.2, 500], 'color': 'red'},],
                     'threshold': {
-                        'line': {'color': "white", 'width': 1},
+                        'line': {'color': "white", 'width': 3},
                         'thickness': 0.75,
                         'value': get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.25 }}))
 
@@ -677,13 +677,13 @@ if selected_metrics == 'Maintenance':
                 delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.1, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "red"},
+                    'bar': {'color': "darkblue"},
                     'steps': [
                         {'range': [0, get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.8 ], 'color': 'green'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.95 ], 'color': 'yellow'},
-                        {'range': [get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) *0.95, 500], 'color': 'orange'},],
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) *0.95, 500], 'color': 'red'},],
                     'threshold': {
-                        'line': {'color': "white", 'width': 1},
+                        'line': {'color': "white", 'width': 3},
                         'thickness': 0.75,
                         'value': get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.1}}))
 
@@ -700,7 +700,7 @@ if selected_metrics == 'Maintenance':
                 title = {'text': "Pièce 4", 'font': {'size': 20}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "green"},
+                    'bar': {'color': "darkblue"},
                     'bgcolor': "white",
                     'borderwidth': 2,
                     'bordercolor': "gray",
@@ -722,13 +722,13 @@ if selected_metrics == 'Maintenance':
                 delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.25, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "orange"},
+                    'bar': {'color': "darkblue"},
                     'steps': [
                         {'range': [0, get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.8 ], 'color': 'green'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.2 ], 'color': 'yellow'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.2, 500], 'color': 'red'},],
                     'threshold': {
-                        'line': {'color': "white", 'width': 1},
+                        'line': {'color': "white", 'width': 3},
                         'thickness': 0.75,
                         'value': get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.25 }}))
 
@@ -746,13 +746,13 @@ if selected_metrics == 'Maintenance':
                 delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.1, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
                 gauge = {
                     'axis': {'range': [None, 500]},
-                    'bar': {'color': "red"},
+                    'bar': {'color': "darkblue"},
                     'steps': [
                         {'range': [0, get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.8 ], 'color': 'green'},
                         {'range': [get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.95 ], 'color': 'yellow'},
-                        {'range': [get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) *0.95, 500], 'color': 'orange'},],
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) *0.95, 500], 'color': 'red'},],
                     'threshold': {
-                        'line': {'color': "white", 'width': 1},
+                        'line': {'color': "white", 'width': 3},
                         'thickness': 0.75,
                         'value': get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.1}}))
 
