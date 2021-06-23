@@ -36,7 +36,6 @@ failuresbyage = loadData('./failuresbyage.csv')
 failuresbymodel = loadData('./failuresbymodel.csv')
 sincelastfail = loadData('./sincelastfail.csv')
 days_between_failures = loadData('./days_between_failures.csv')
-RUL = loadData('./RUL2.csv')
 
 
 selected_metrics = st.sidebar.selectbox(
