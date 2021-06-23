@@ -387,10 +387,10 @@ if selected_metrics == 'Télémétrie':
 
 if selected_metrics == 'Maintenance':
 
-    model_comp1 = pickle.load(open('comp1_pred_model', 'rb'))
-    model_comp2 = pickle.load(open('comp2_pred_model', 'rb'))
-    model_comp3 = pickle.load(open('comp3_pred_model', 'rb'))
-    model_comp4 = pickle.load(open('comp4_pred_model', 'rb'))
+    model_comp1 = pickle.load(open('comp1_pred_model.pkl', 'rb'))
+    model_comp2 = pickle.load(open('comp2_pred_model.pkl', 'rb'))
+    model_comp3 = pickle.load(open('comp3_pred_model.pkl', 'rb'))
+    model_comp4 = pickle.load(open('comp4_pred_model.pkl', 'rb'))
 
     def get_days(df, kind, failure, machine):
         first_time = df['datetime'].loc[(df[kind] == failure) & (df.machineID == machine)]
