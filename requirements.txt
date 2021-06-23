@@ -6,3 +6,6 @@ pillow
 streamlit_echarts
 plotly
 Helper
+numpy
+sklearn
+pickle

@@ -1,3 +1,5 @@
+#import the libraries
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -8,8 +10,12 @@ import plotly.express as px
 from Helper import loadData
 import plotly.graph_objects as go
 import datetime
-
-
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score
+import seaborn as sns
+import pickle
+import numpy as np
 import streamlit.components.v1 as components
 
 #--------------------------------- ---------------------------------  ---------------------------------
@@ -19,6 +25,7 @@ import streamlit.components.v1 as components
 st.set_page_config(page_title='Dashboard ACCIA', page_icon=None, layout='wide', initial_sidebar_state='auto')
 
 machines = loadData('./PdM_machines.csv')
+machines2 = loadData('./machines2.csv')
 maint = loadData('./PdM_maint.csv')
 errors = loadData('./PdM_errors.csv')
 telemetry = loadData('./PdM_telemetry.csv')
@@ -29,6 +36,7 @@ failuresbyage = loadData('./failuresbyage.csv')
 failuresbymodel = loadData('./failuresbymodel.csv')
 sincelastfail = loadData('./sincelastfail.csv')
 days_between_failures = loadData('./days_between_failures.csv')
+RUL = loadData('./RUL2.csv')
 
 
 selected_metrics = st.sidebar.selectbox(
@@ -379,6 +387,11 @@ if selected_metrics == 'Télémétrie':
 
 if selected_metrics == 'Maintenance':
 
+    model_comp1 = pickle.load(open('comp1_pred_model', 'rb'))
+    model_comp2 = pickle.load(open('comp2_pred_model', 'rb'))
+    model_comp3 = pickle.load(open('comp3_pred_model', 'rb'))
+    model_comp4 = pickle.load(open('comp4_pred_model', 'rb'))
+
     def get_days(df, kind, failure, machine):
         first_time = df['datetime'].loc[(df[kind] == failure) & (df.machineID == machine)]
         if len(first_time) == 0:
@@ -410,6 +423,7 @@ if selected_metrics == 'Maintenance':
         selected_machine1 = st.slider("Choisissez une machine (défaillance)", 1, 100)
         st.write('JOURS DEPUIS LA DERNIERE DEFAILLANCE DES PIECES POUR LA MACHINE ' + str(selected_machine1))
 
+
     with maint2:
 
         selected_machine2 = st.slider("Choisissez une machine (maintenance)", 1, 100)
@@ -417,103 +431,335 @@ if selected_metrics == 'Maintenance':
 
     maintquad1, maintquad2, maintquad3, maintquad4 = st.beta_columns((3, 3, 3, 3))
     with maintquad1:
-        fig = go.Figure(go.Indicator(
-            mode = "gauge+number+delta",
-            value = get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1),
-            domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 1", 'font': {'size': 20}},
-            delta = {'reference': days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.std(), 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
-            gauge = {
-                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
-                'bar': {'color': "darkblue"},
-                'bgcolor': "white",
-                'borderwidth': 2,
-                'bordercolor': "gray",
-                'steps': [
-                    {'range': [0, days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.mean()], 'color': 'white'},
-                    {'range': [days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.mean(), 500], 'color': 'orange'}],
-                'threshold': {
-                    'line': {'color': "red", 'width': 4},
-                    'thickness': 0.75,
-                    'value': days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp1')].days.std()}}))
 
-        fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        ycomp1 = np.array([selected_machine1,
+            telemetry[telemetry.machineID == selected_machine1]['volt'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['rotate'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['pressure'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['vibration'].tail(1),
+            get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1),
+            machines2.loc[(machines2['machineID'] == selected_machine1)].model_label,
+            machines2.loc[(machines2['machineID'] == selected_machine1)].age
+       ])
+        ycomp1 = ycomp1.reshape(1, -1)
+        predictioncomp1 = model_comp1.predict(ycomp1)
 
-        st.plotly_chart(fig, use_container_width=True)
+        ycomp2 = np.array([selected_machine1,
+            telemetry[telemetry.machineID == selected_machine1]['volt'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['rotate'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['pressure'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['vibration'].tail(1),
+            get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1),
+            machines2.loc[(machines2['machineID'] == selected_machine1)].model_label,
+            machines2.loc[(machines2['machineID'] == selected_machine1)].age
+       ])
+        ycomp2 = ycomp2.reshape(1, -1)
+        predictioncomp2 = model_comp2.predict(ycomp2)
 
-        fig = go.Figure(go.Indicator(
-            mode = "gauge+number+delta",
-            value = get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1),
-            domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 2", 'font': {'size': 20}},
-            delta = {'reference': days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.std(), 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
-            gauge = {
-                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
-                'bar': {'color': "darkblue"},
-                'bgcolor': "white",
-                'borderwidth': 2,
-                'bordercolor': "gray",
-                'steps': [
-                    {'range': [0, days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.mean()], 'color': 'white'},
-                    {'range': [days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.mean(), 500], 'color': 'orange'}],
-                'threshold': {
-                    'line': {'color': "red", 'width': 4},
-                    'thickness': 0.75,
-                    'value': days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp2')].days.std()}}))
+        if predictioncomp1 == 0:
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 1", 'font': {'size': 20}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "green"},
+                    'bgcolor': "white",
+                    'borderwidth': 2,
+                    'bordercolor': "gray",
+                    'steps': [
+                        {'range': [0, 500], 'color': 'white'}]
+                        }))
 
-        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
-        st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif predictioncomp1 == 1:
+
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 1", 'font': {'size': 20}},
+                delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.25, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "orange"},
+                    'steps': [
+                        {'range': [0, get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.8 ], 'color': 'green'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.2 ], 'color': 'yellow'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.2, 500], 'color': 'red'},],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 1},
+                        'thickness': 0.75,
+                        'value': get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.25 }}))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        else:
+
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 1", 'font': {'size': 20}},
+                delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.1, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "red"},
+                    'steps': [
+                        {'range': [0, get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.8 ], 'color': 'green'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 0.95 ], 'color': 'yellow'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) *0.95, 500], 'color': 'orange'},],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 1},
+                        'thickness': 0.75,
+                        'value': get_days(dayssincelastfailure,'failure', 'comp1', selected_machine1) * 1.1}}))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        if predictioncomp2 == 0:
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 2", 'font': {'size': 20}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "green"},
+                    'bgcolor': "white",
+                    'borderwidth': 2,
+                    'bordercolor': "gray",
+                    'steps': [
+                        {'range': [0, 500], 'color': 'white'}]
+                        }))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif predictioncomp2 == 1:
+
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 2", 'font': {'size': 20}},
+                delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.25, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "orange"},
+                    'steps': [
+                        {'range': [0, get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.8 ], 'color': 'green'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.2 ], 'color': 'yellow'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.2, 500], 'color': 'red'},],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 1},
+                        'thickness': 0.75,
+                        'value': get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.25 }}))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        else:
+
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 2", 'font': {'size': 20}},
+                delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.1, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "red"},
+                    'steps': [
+                        {'range': [0, get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.8 ], 'color': 'green'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 0.95 ], 'color': 'yellow'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) *0.95, 500], 'color': 'orange'},],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 1},
+                        'thickness': 0.75,
+                        'value': get_days(dayssincelastfailure,'failure', 'comp2', selected_machine1) * 1.1}}))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
 
     with maintquad2:
 
-        fig = go.Figure(go.Indicator(
-            mode = "gauge+number+delta",
-            value = get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1),
-            domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 3", 'font': {'size': 20}},
-            delta = {'reference': days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.std(), 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
-            gauge = {
-                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
-                'bar': {'color': "darkblue"},
-                'bgcolor': "white",
-                'borderwidth': 2,
-                'bordercolor': "gray",
-                'steps': [
-                    {'range': [0, days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.mean()], 'color': 'white'},
-                    {'range': [days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.mean(), 500], 'color': 'orange'}],
-                'threshold': {
-                    'line': {'color': "red", 'width': 4},
-                    'thickness': 0.75,
-                    'value': days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp3')].days.std()}}))
 
-        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
 
-        st.plotly_chart(fig, use_container_width=True)
+        ycomp3 = np.array([selected_machine1,
+            telemetry[telemetry.machineID == selected_machine1]['volt'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['rotate'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['pressure'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['vibration'].tail(1),
+            get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1),
+            machines2.loc[(machines2['machineID'] == selected_machine1)].model_label,
+            machines2.loc[(machines2['machineID'] == selected_machine1)].age
+       ])
+        ycomp3 = ycomp3.reshape(1, -1)
+        predictioncomp3 = model_comp3.predict(ycomp3)
 
-        fig = go.Figure(go.Indicator(
-            mode = "gauge+number+delta",
-            value = get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1),
-            domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Pièce 4", 'font': {'size': 20}},
-            delta = {'reference': days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.std(), 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
-            gauge = {
-                'axis': {'range': [None, 500], 'tickwidth': 1, 'tickcolor': "darkblue"},
-                'bar': {'color': "darkblue"},
-                'bgcolor': "white",
-                'borderwidth': 2,
-                'bordercolor': "gray",
-                'steps': [
-                    {'range': [0, days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.mean()], 'color': 'white'},
-                    {'range': [days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.mean(), 500], 'color': 'orange'}],
-                'threshold': {
-                    'line': {'color': "red", 'width': 4},
-                    'thickness': 0.75,
-                    'value': days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.mean() + days_between_failures.loc[(days_between_failures['failure'] == 'comp4')].days.std()}}))
 
-        fig.update_layout(height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        ycomp4 = np.array([selected_machine1,
+            telemetry[telemetry.machineID == selected_machine1]['volt'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['rotate'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['pressure'].tail(1),
+            telemetry[telemetry.machineID == selected_machine1]['vibration'].tail(1),
+            get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1),
+            machines2.loc[(machines2['machineID'] == selected_machine1)].model_label,
+            machines2.loc[(machines2['machineID'] == selected_machine1)].age
+       ])
+        ycomp4 = ycomp4.reshape(1, -1)
+        predictioncomp4 = model_comp4.predict(ycomp4)
 
-        st.plotly_chart(fig, use_container_width=True)
+
+
+
+        if predictioncomp3 == 0:
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 3", 'font': {'size': 20}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "green"},
+                    'bgcolor': "white",
+                    'borderwidth': 2,
+                    'bordercolor': "gray",
+                    'steps': [
+                        {'range': [0, 500], 'color': 'white'}]
+                        }))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif predictioncomp3 == 1:
+
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 3", 'font': {'size': 20}},
+                delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.25, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "orange"},
+                    'steps': [
+                        {'range': [0, get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.8 ], 'color': 'green'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.2 ], 'color': 'yellow'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.2, 500], 'color': 'red'},],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 1},
+                        'thickness': 0.75,
+                        'value': get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.25 }}))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        else:
+
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 3", 'font': {'size': 20}},
+                delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.1, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "red"},
+                    'steps': [
+                        {'range': [0, get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.8 ], 'color': 'green'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 0.95 ], 'color': 'yellow'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) *0.95, 500], 'color': 'orange'},],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 1},
+                        'thickness': 0.75,
+                        'value': get_days(dayssincelastfailure,'failure', 'comp3', selected_machine1) * 1.1}}))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
+
+
+        if predictioncomp4 == 0:
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 4", 'font': {'size': 20}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "green"},
+                    'bgcolor': "white",
+                    'borderwidth': 2,
+                    'bordercolor': "gray",
+                    'steps': [
+                        {'range': [0, 500], 'color': 'white'}]
+                        }))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif predictioncomp4 == 1:
+
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 4", 'font': {'size': 20}},
+                delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.25, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "orange"},
+                    'steps': [
+                        {'range': [0, get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.8 ], 'color': 'green'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.2 ], 'color': 'yellow'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.2, 500], 'color': 'red'},],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 1},
+                        'thickness': 0.75,
+                        'value': get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.25 }}))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        else:
+
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number+delta",
+                value = get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1),
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "Pièce 4", 'font': {'size': 20}},
+                delta = {'reference': get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.1, 'increasing': {'color': "red"}, 'decreasing' : {'color': "green"}},
+                gauge = {
+                    'axis': {'range': [None, 500]},
+                    'bar': {'color': "red"},
+                    'steps': [
+                        {'range': [0, get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.8 ], 'color': 'green'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.8, get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 0.95 ], 'color': 'yellow'},
+                        {'range': [get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) *0.95, 500], 'color': 'orange'},],
+                    'threshold': {
+                        'line': {'color': "white", 'width': 1},
+                        'thickness': 0.75,
+                        'value': get_days(dayssincelastfailure,'failure', 'comp4', selected_machine1) * 1.1}}))
+
+            fig.update_layout(autosize = False, height=250, paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+
+            st.plotly_chart(fig, use_container_width=True)
 
     with maintquad3:
         
