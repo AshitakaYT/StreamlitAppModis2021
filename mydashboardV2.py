@@ -67,8 +67,8 @@ if selected_metrics == 'Etat de santé systeme':
     #--------------------------------- ---------------------------------  ---------------------------------
     #--------------------------------- 4 columns
     #--------------------------------- ---------------------------------  ---------------------------------
-    col1, col2 = st.beta_columns((6, 6))
-    col3, col4 = st.beta_columns((6, 6))
+    col1, col2 = st.columns((6, 6))
+    col3, col4 = st.columns((6, 6))
     width = 1200
     height = 400
 
@@ -246,7 +246,7 @@ if selected_metrics == 'Etat de santé systeme':
     #--------------------------------- telemetry whole
     #--------------------------------- ---------------------------------  ---------------------------------
 if selected_metrics == 'Télémétrie':
-    lin1, lin2 = st.beta_columns((6, 6))
+    lin1, lin2 = st.columns((6, 6))
     width = 1200
     height = 400
     times = ["1 jour", "1 semaine", "1 mois"]
@@ -413,7 +413,7 @@ if selected_metrics == 'Maintenance':
 
     dayssincelastfailure = pd.merge(telemetry, failures, how = 'outer')
     dayssincelastmaint = pd.merge(telemetry, maint, how= 'outer')
-    maint1, maint2 = st.beta_columns((6, 6))
+    maint1, maint2 = st.columns((6, 6))
     width = 1200
     height = 400
 
@@ -428,7 +428,7 @@ if selected_metrics == 'Maintenance':
         selected_machine2 = st.slider("Choisissez une machine (maintenance)", 1, 100)
         st.write('JOURS DEPUIS LA DERNIERE MAINTENANCE DES PIECES POUR LA MACHINE ' + str(selected_machine2))
 
-    maintquad1, maintquad2, maintquad3, maintquad4 = st.beta_columns((3, 3, 3, 3))
+    maintquad1, maintquad2, maintquad3, maintquad4 = st.columns((3, 3, 3, 3))
     with maintquad1:
 
         ycomp1 = np.array([selected_machine1,
@@ -861,7 +861,7 @@ if selected_metrics == 'Maintenance':
         st.plotly_chart(fig, use_container_width=True)
 
 
-    maint1, maint2 = st.beta_columns((6, 6))
+    maint1, maint2 = st.columns((6, 6))
     width = 1200
     height = 400
 
